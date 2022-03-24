@@ -1,0 +1,15 @@
+diff -r -u qtbase-everywhere-src-6.2.4/mkspecs/linux-g++/qmake.conf qtbase-everywhere-src-6.2.4-patched/mkspecs/linux-g++/qmake.conf
+--- qtbase-everywhere-src-6.2.4/mkspecs/linux-g++/qmake.conf	2022-02-16 14:13:47.000000000 +0100
++++ qtbase-everywhere-src-6.2.4-patched/mkspecs/linux-g++/qmake.conf	2022-03-24 13:34:41.065706775 +0100
+@@ -6,6 +6,11 @@
+ CONFIG                 += incremental
+ QMAKE_INCREMENTAL_STYLE = sublib
+ 
++# stop message: Variable QMAKE_CXX.COMPILER_MACROS is not defined
++# see https://raw.githubusercontent.com/jrmarino/Ravenports/master/bucket_1A/qt5-qtbase
++
++QMAKE_CXX.COMPILER_MACROS =
++
+ include(../common/linux.conf)
+ include(../common/gcc-base-unix.conf)
+ include(../common/g++-unix.conf)
