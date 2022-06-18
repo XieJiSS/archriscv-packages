@@ -1,23 +1,15 @@
 --- PKGBUILD
 +++ PKGBUILD
-@@ -10,8 +10,18 @@ url="https://rocksdb.org/"
- license=(GPL2 Apache)
- depends=(bzip2 jemalloc lz4 snappy zlib zstd tbb liburing)
- makedepends=(python)
--source=(rocksdb-$pkgver.tar.gz::https://github.com/facebook/rocksdb/archive/v$pkgver.tar.gz)
--sha256sums=('724e4cba2db6668ff6a21ecabcce0782cd0c8e386796e7e9a14a8260e0600abd')
-+source=(rocksdb-$pkgver.tar.gz::https://github.com/facebook/rocksdb/archive/v$pkgver.tar.gz
-+        0000-toku-time-riscv.patch)
-+sha256sums=('724e4cba2db6668ff6a21ecabcce0782cd0c8e386796e7e9a14a8260e0600abd'
-+            '3a50fb1d3e1ade6a588e87556e7dea0fdb30521456748c6c2ffffdd374961949')
-+
+@@ -13,6 +13,12 @@ makedepends=(python)
+ source=(rocksdb-$pkgver.tar.gz::https://github.com/facebook/rocksdb/archive/v$pkgver.tar.gz)
+ sha256sums=('51a44b8f151d1a39793a8cf37d9de248b980f9aaed0c7bbeee06304e4d7b8d95')
+ 
 +prepare() {
 +  cd rocksdb-$pkgver
-+  sed -i "s/-lpthread/-pthread/" build_tools/build_detect_platform examples/Makefile
-+
-+  # see https://github.com/facebook/rocksdb/pull/9215
-+  patch -p1 -i ../0000-toku-time-riscv.patch
++  # the next line should be removed as soon as our dtbs can return rv64gc instead of rv64imafdc as isa string
++  sed -i 's/-march=${RISC_ISA}/-march=${RISC_ISA} -misa-spec=2.2/g' build_tools/build_detect_platform
 +}
- 
++
  build() {
    cd rocksdb-$pkgver
+   PORTABLE=1 USE_RTTI=1 make shared_lib
